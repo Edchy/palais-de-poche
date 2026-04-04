@@ -1,0 +1,641 @@
+@font-face {
+  font-family: "Jost";
+  src: url("Jost-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Tokens ─────────────────────────────────────────── */
+:root {
+  --red: #ff3d21;
+  --black: #1c1c1a;
+  --white: #f2ede8;
+
+  /* Typographic scale (Perfect Fourth × 16px base) */
+  --text-xs: 0.64rem; /* 10px — label */
+  --text-sm: 0.8rem; /* 13px — caption */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.333rem; /* 21px */
+  --text-xl: 1.777rem; /* 28px — heading */
+  --text-2xl: 2.369rem; /* 38px — display heading */
+  --text-3xl: 3.157rem; /* 50px */
+  --text-hero: clamp(4rem, 9vw, 7.5rem); /* display numeral */
+
+  /* Spacing (base 8px) */
+  --sp-1: 0.5rem;
+  --sp-2: 1rem;
+  --sp-3: 1.5rem;
+  --sp-4: 2rem;
+  --sp-6: 3rem;
+  --sp-8: 4rem;
+  --sp-12: 6rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--black);
+}
+
+body {
+  font-family: "Jost", sans-serif;
+  color: var(--black);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Book container ─────────────────────────────────── */
+.book {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: var(--white);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+/* ─── Spreads ─────────────────────────────────────────── */
+.spread {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.spread.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ─── Pages ───────────────────────────────────────────── */
+.page {
+  flex: 2; /* image pages get 2/3 by default */
+  overflow: hidden;
+  position: relative;
+}
+
+.page-left {
+  flex: 1; /* text pages always 1/3 */
+  border-right: 1px solid rgba(28, 28, 26, 0.1);
+}
+
+/* Spine shadow */
+.page-left::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 100%;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.06), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── Theme system ────────────────────────────────────── */
+/* Two themes only: white bg → black text, red bg → white text */
+.spread {
+  --t-bg: var(--white);
+  --t-text: var(--black);
+  --t-label: var(--red);
+  --t-caption: var(--black);
+}
+
+[data-theme="rouge"] {
+  --t-bg: var(--red);
+  --t-text: var(--white);
+  --t-label: color-mix(in srgb, var(--white) 70%, transparent);
+  --t-caption: var(--white);
+}
+
+/* Apply theme vars to text containers */
+.page-left,
+.reversed-text,
+.display-page,
+.multi-stage {
+  background: var(--t-bg);
+}
+
+.multi-bar {
+  background: var(--t-bg);
+  /*border-top-color: color-mix(in srgb, var(--t-text) 12%, transparent);*/
+}
+
+/* ─── Standard text block ─────────────────────────────── */
+.page-content {
+  padding: 12% 10% 10%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-2);
+}
+
+.label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--t-label);
+}
+
+h2 {
+  font-size: clamp(var(--text-xl), 3vw, var(--text-2xl));
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--t-text);
+}
+
+.caption {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--t-caption);
+  max-width: 30ch;
+}
+
+/* ─── Image ───────────────────────────────────────────── */
+.page-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.page-right img.contain {
+  object-fit: contain;
+  background: var(--white);
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT VARIANTS
+   ══════════════════════════════════════════════════════ */
+
+/* ── 1. Full-bleed ─────────────────────────────────────
+   Image bleeds across both pages; left half has a dark
+   gradient scrim so white text reads cleanly on top.    */
+.layout-full-bleed .page-left.full-bleed-text {
+  background: transparent;
+  z-index: 2;
+  border-right: none;
+}
+
+.layout-full-bleed .page-left.full-bleed-text::after {
+  display: none; /* no spine shadow — covered by scrim */
+}
+
+.layout-full-bleed .page-right.full-bleed-img {
+  position: absolute;
+  inset: 0;
+  flex: none;
+  width: 100%;
+  z-index: 0;
+}
+
+.layout-full-bleed .page-right.full-bleed-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Left-half scrim */
+.layout-full-bleed .page-left.full-bleed-text::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(28, 28, 26, 0.82) 0%,
+    rgba(28, 28, 26, 0.55) 70%,
+    transparent 100%
+  );
+  z-index: -1;
+}
+
+.layout-full-bleed .page-content {
+  justify-content: flex-end;
+  padding-bottom: 12%;
+}
+
+.layout-full-bleed .label {
+  color: var(--red);
+}
+
+.layout-full-bleed h2 {
+  color: var(--white);
+  font-size: clamp(var(--text-xl), 3.5vw, var(--text-3xl));
+  font-weight: 900;
+}
+
+.layout-full-bleed .caption {
+  color: color-mix(in srgb, var(--white) 75%, transparent);
+}
+
+/* ── 2. Reversed ───────────────────────────────────────
+   Image left, text right. Mirror of standard.           */
+.layout-reversed .reversed-img {
+  flex: 2;
+  border-right: 1px solid rgba(28, 28, 26, 0.1);
+}
+
+.layout-reversed .reversed-text {
+  flex: 1;
+}
+
+.layout-reversed .reversed-img::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 100%;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.06), transparent);
+  pointer-events: none;
+}
+
+.layout-reversed .reversed-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.layout-reversed .page-left::after {
+  display: none;
+}
+
+.layout-reversed .reversed-text .page-content {
+  justify-content: center;
+}
+
+/* ── 3. Red ────────────────────────────────────────────
+   Handled entirely by data-theme="rouge" now.           */
+
+/* ── 4. Display ────────────────────────────────────────
+   Left page: enormous ghost Roman numeral fills the
+   background. Headline below it, caption pinned bottom. */
+.display-page {
+  overflow: hidden;
+}
+
+.display-numeral {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--t-label);
+  pointer-events: none;
+  user-select: none;
+}
+
+.display-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 10% 10% 10%;
+  gap: var(--sp-3);
+}
+
+.display-title {
+  font-size: clamp(var(--text-2xl), 3.5vw, var(--text-hero));
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--t-text);
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.display-caption {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--t-caption);
+  max-width: 28ch;
+}
+
+/* ── Duo & Trio ────────────────────────────────────────
+   Full-spread layout: images fill the canvas, text bar
+   runs across the bottom. Images overlap slightly,
+   collage-style.                                         */
+
+.layout-duo,
+.layout-trio {
+  /* these spreads have no left/right page split */
+}
+
+.multi-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+}
+
+/* Image area — fills all available space above the bar */
+.multi-photos {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--t-bg);
+}
+
+/* Each photo is absolutely placed so they can overlap */
+.multi-photo {
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  width: 46%;
+  box-shadow: 0 6px 28px rgba(28, 28, 26, 0.28);
+  overflow: hidden;
+  outline: 8px solid var(--white);
+}
+
+.multi-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Duo: 2 photos — left slightly higher, right slightly lower, overlapping at center */
+.layout-duo .multi-photo:nth-child(1) {
+  left: 2%;
+  top: 4%;
+  bottom: 8%;
+  transform: rotate(-1.5deg);
+  z-index: 1;
+}
+
+.layout-duo .multi-photo:nth-child(2) {
+  right: 2%;
+  left: auto;
+  top: 8%;
+  bottom: 4%;
+  transform: rotate(1.2deg);
+  z-index: 2;
+}
+
+/* Trio: 3 photos — fanned across, center on top */
+.layout-trio .multi-photo:nth-child(1) {
+  left: 2%;
+  width: 40%;
+  top: 10%;
+  bottom: 12%;
+  transform: rotate(-2.5deg);
+  z-index: 1;
+}
+
+.layout-trio .multi-photo:nth-child(2) {
+  left: 50%;
+  transform: translateX(-50%) rotate(0.5deg);
+  width: 40%;
+  top: 6%;
+  bottom: 6%;
+  z-index: 3;
+}
+
+.layout-trio .multi-photo:nth-child(3) {
+  right: 2%;
+  left: auto;
+  width: 40%;
+  top: 12%;
+  bottom: 10%;
+  transform: rotate(2deg);
+  z-index: 2;
+}
+
+/* Text bar — full width strip at bottom */
+.multi-bar {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 4rem 1fr 1fr;
+  grid-template-rows: auto auto;
+  align-items: end;
+  column-gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-8) var(--sp-3) var(--sp-4);
+  /*border-top: 1px solid rgba(28, 28, 26, 0.12);*/
+}
+
+.multi-bar .label {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  align-self: center;
+}
+
+.multi-bar h2 {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: center;
+  font-size: clamp(var(--text-lg), 2.2vw, var(--text-2xl));
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.multi-bar .caption {
+  grid-column: 3;
+  grid-row: 1 / 3;
+  align-self: center;
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  max-width: none;
+  text-align: right;
+  padding-right: var(--sp-4);
+  color: var(--t-caption);
+}
+
+/* ── 5. Wide ───────────────────────────────────────────
+   1/3 text + 2/3 image. Override flex proportions.      */
+.layout-wide {
+  /* spread is already display:flex */
+}
+
+.layout-wide .wide-text {
+  flex: 1;
+  border-right: 1px solid rgba(28, 28, 26, 0.1);
+}
+
+.layout-wide .wide-text::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 100%;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.06), transparent);
+  pointer-events: none;
+}
+
+.layout-wide .wide-img {
+  flex: 2;
+  overflow: hidden;
+  position: relative;
+}
+
+.layout-wide .wide-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── 6. Collage ────────────────────────────────────────
+   Two photos on the right page, slightly rotated,
+   layered like polaroids dropped on a table.            */
+.collage-stage {
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.collage-photo {
+  position: absolute;
+  width: 68%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(28, 28, 26, 0.22);
+}
+
+.collage-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.collage-photo--back {
+  transform: rotate(-4deg) translate(-10%, 6%);
+  z-index: 1;
+}
+
+.collage-photo--front {
+  transform: rotate(3deg) translate(10%, -6%);
+  z-index: 2;
+}
+
+/* ══════════════════════════════════════════════════════
+   COVER
+   ══════════════════════════════════════════════════════ */
+.cover-left {
+  background: var(--white);
+}
+
+.cover-right {
+  background: var(--black);
+  display: flex;
+  align-items: flex-end;
+}
+
+.cover-content {
+  padding: 10%;
+  width: 100%;
+}
+
+.cover-content h1 {
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+/* ══════════════════════════════════════════════════════
+   BACK COVER
+   ══════════════════════════════════════════════════════ */
+.back-cover {
+  background: var(--black);
+  display: flex;
+  align-items: flex-start;
+}
+
+.back-cover .page-content {
+  justify-content: flex-start;
+}
+
+.back-title {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--white) 35%, transparent);
+}
+
+.back-cover-right {
+  background: var(--white);
+}
+
+/* ══════════════════════════════════════════════════════
+   CONTROLS
+   ══════════════════════════════════════════════════════ */
+#prev,
+#next {
+  position: fixed;
+  bottom: 1.5rem;
+  top: auto;
+  transform: none;
+  background: var(--red);
+  border: none;
+  color: var(--white);
+  font-size: 1.2rem;
+  cursor: pointer;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+  line-height: 1;
+  z-index: 10;
+}
+
+#prev {
+  left: calc(50% - 3.2rem);
+}
+#next {
+  left: calc(50% + 0.4rem);
+}
+
+#prev:hover,
+#next:hover {
+  opacity: 0.7;
+}
+
+#prev:disabled,
+#next:disabled {
+  opacity: 0.2;
+  cursor: default;
+}
+
+#page-indicator {
+  position: fixed;
+  top: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Jost", sans-serif;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--red);
+  z-index: 10;
+}
