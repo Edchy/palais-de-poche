@@ -7,10 +7,26 @@
 // To reorder: move lines up/down.
 const pages = [
   {
+    img: "img/IMG_2462.webp",
+    title: "Aloha!",
+    caption: `Built in 2021, this gem sits on wheels making it easy to relocate if life ever takes you somewhere new.
+    Two adults, two kids and a cat with strong opinions have filled this place with breakfast chaos, movie nights and memories we'll carry forever. The kids basically grew up here. And now they've outgrown it, quite literally.
+    So it's time to hand over the keys to someone ready to write the next chapter. Maybe that's you?`,
+    layout: "wide",
+  }, // 2021-07-13–14
+
+  {
+    imgs: ["img/tb.JPG", "img/ea.jpg"],
+    title: "Title placeholder",
+    caption: "Caption placeholder.",
+    layout: "duo-side",
+  },
+
+  {
     img: "img/IMG_1947.webp",
     title: "And so it begins...",
     caption: "Specialltillverkat underrede i Borlänge",
-  }, // first
+  },
   {
     img: "img/IMG_1976.webp",
     title: "The Blueprint",
@@ -146,10 +162,11 @@ const pages = [
     caption: "Caption placeholder.",
   }, // 2021-07-10
   {
-    imgs: ["img/IMG_2462.webp", "img/IMG_2478.webp"],
+    img: "img/IMG_2478.webp",
     title: "Title placeholder",
     caption: "Caption placeholder.",
   }, // 2021-07-13–14
+
   {
     imgs: ["img/IMG_2569.webp", "img/IMG_2575.webp"],
     title: "Title placeholder",

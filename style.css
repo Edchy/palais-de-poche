@@ -462,6 +462,58 @@ h2 {
   color: var(--t-caption);
 }
 
+/* ── Duo-side ──────────────────────────────────────────
+   1/3 text left + 2/3 right with two overlapping photos */
+.layout-duo-side {
+  display: flex;
+}
+
+.layout-duo-side .duo-side-text {
+  flex: 1;
+  border-right: 1px solid rgba(28, 28, 26, 0.1);
+}
+
+.layout-duo-side .duo-side-photos {
+  flex: 2;
+  position: relative;
+  overflow: hidden;
+  background: var(--t-bg);
+}
+
+.layout-duo-side .duo-side-photos .multi-photo {
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  width: 46%;
+  box-shadow: 0 6px 28px rgba(28, 28, 26, 0.28);
+  overflow: hidden;
+  outline: 8px solid var(--white);
+}
+
+.layout-duo-side .duo-side-photos .multi-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.layout-duo-side .duo-side-photos .multi-photo:nth-child(1) {
+  left: 4%;
+  top: 4%;
+  bottom: 12%;
+  transform: rotate(-1.5deg);
+  z-index: 1;
+}
+
+.layout-duo-side .duo-side-photos .multi-photo:nth-child(2) {
+  right: 4%;
+  left: auto;
+  top: 12%;
+  bottom: 4%;
+  transform: rotate(1.2deg);
+  z-index: 2;
+}
+
 /* ── 5. Wide ───────────────────────────────────────────
    1/3 text + 2/3 image. Override flex proportions.      */
 .layout-wide {
@@ -514,6 +566,7 @@ h2 {
   aspect-ratio: 3 / 4;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(28, 28, 26, 0.22);
+  outline: 10px solid var(--white);
 }
 
 .collage-photo img {
@@ -541,7 +594,7 @@ h2 {
 }
 
 .cover-right {
-  background: var(--black);
+  background: var(--red);
   display: flex;
   align-items: flex-end;
 }
@@ -552,11 +605,20 @@ h2 {
 }
 
 .cover-content h1 {
-  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-size: clamp(3.5rem, 8.5vw, 8rem);
   font-weight: 900;
   color: var(--white);
   line-height: 1;
   letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.cover-translation {
+  margin-top: 0.75em;
+  font-size: clamp(0.7rem, 1.2vw, 1rem);
+  font-weight: 400;
+  color: color-mix(in srgb, var(--white) 70%, transparent);
+  letter-spacing: 0.04em;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -601,6 +663,7 @@ h2 {
   width: 2.8rem;
   height: 2.8rem;
   border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -625,17 +688,4 @@ h2 {
 #next:disabled {
   opacity: 0.2;
   cursor: default;
-}
-
-#page-indicator {
-  position: fixed;
-  top: 1.2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: "Jost", sans-serif;
-  font-size: var(--text-xs);
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  color: var(--red);
-  z-index: 10;
 }
