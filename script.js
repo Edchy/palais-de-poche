@@ -79,7 +79,6 @@ const romanNumerals = [
 // Layout cycle for single-image spreads
 const LAYOUT_CYCLE = [
   "wide",
-  "full-bleed",
   "reversed",
   "red",
   "display",
@@ -138,6 +137,10 @@ function buildSpread(page, i, prevLayout) {
         <div class="page page-right duo-side-photos">
           <div class="multi-photo"><img data-src="${imgs[0]}" alt="${page.title}"></div>
           <div class="multi-photo"><img data-src="${imgs[1]}" alt="${page.title}"></div>
+          <div class="spread-nav spread-nav">
+            <button class="spread-prev" aria-label="Previous page">&#8592;</button>
+            <button class="spread-next" aria-label="Next page">&#8594;</button>
+          </div>
         </div>
       </div>`;
   }
@@ -177,23 +180,15 @@ function buildSpread(page, i, prevLayout) {
       </div>`;
   }
 
-  if (layout === "full-bleed") {
-    return `
-      <div class="spread layout-full-bleed" id="spread-${i + 1}" ${t}>
-        <div class="page page-left full-bleed-text">
-          ${buildTextBlock(page, num)}
-        </div>
-        <div class="page page-right full-bleed-img">
-          <img data-src="${imgs[0]}" alt="${page.title}"${imgClass}>
-        </div>
-      </div>`;
-  }
-
   if (layout === "reversed") {
     return `
       <div class="spread layout-reversed" id="spread-${i + 1}" ${t}>
         <div class="page page-left reversed-img">
           <img data-src="${imgs[0]}" alt="${page.title}"${imgClass}>
+          <div class="spread-nav spread-nav">
+            <button class="spread-prev" aria-label="Previous page">&#8592;</button>
+            <button class="spread-next" aria-label="Next page">&#8594;</button>
+          </div>
         </div>
         <div class="page page-right reversed-text">
           <div class="page-content">
@@ -213,6 +208,10 @@ function buildSpread(page, i, prevLayout) {
         </div>
         <div class="page page-right">
           <img data-src="${imgs[0]}" alt="${page.title}"${imgClass}>
+          <div class="spread-nav spread-nav">
+            <button class="spread-prev" aria-label="Previous page">&#8592;</button>
+            <button class="spread-next" aria-label="Next page">&#8594;</button>
+          </div>
         </div>
       </div>`;
   }
@@ -229,6 +228,10 @@ function buildSpread(page, i, prevLayout) {
         </div>
         <div class="page page-right">
           <img data-src="${imgs[0]}" alt="${page.title}"${imgClass}>
+          <div class="spread-nav spread-nav">
+            <button class="spread-prev" aria-label="Previous page">&#8592;</button>
+            <button class="spread-next" aria-label="Next page">&#8594;</button>
+          </div>
         </div>
       </div>`;
   }
@@ -248,6 +251,10 @@ function buildSpread(page, i, prevLayout) {
           <div class="collage-photo collage-photo--front">
             <img data-src="${imgs[0]}" alt="${page.title}">
           </div>
+          <div class="spread-nav spread-nav">
+            <button class="spread-prev" aria-label="Previous page">&#8592;</button>
+            <button class="spread-next" aria-label="Next page">&#8594;</button>
+          </div>
         </div>
       </div>`;
   }
@@ -260,6 +267,10 @@ function buildSpread(page, i, prevLayout) {
       </div>
       <div class="page wide-img">
         <img data-src="${imgs[0]}" alt="${page.title}"${imgClass}>
+        <div class="spread-nav spread-nav">
+          <button class="spread-prev" aria-label="Previous page">&#8592;</button>
+          <button class="spread-next" aria-label="Next page">&#8594;</button>
+        </div>
       </div>
     </div>`;
 }
@@ -268,7 +279,18 @@ function buildSpread(page, i, prevLayout) {
 function buildBook() {
   book.innerHTML += `
     <div class="spread active" id="spread-0">
-      <div class="page page-left cover-left"></div>
+      <div class="page page-left cover-left">
+        <div class="nav-hint" id="nav-hint">
+          <div class="nav-hint-desktop">
+            <img src="icon/noun-left-key-6141674.svg" class="nav-hint-key" alt="Left arrow key">
+            <img src="icon/noun-right-key-6141675.svg" class="nav-hint-key" alt="Right arrow key">
+            <span>to browse</span>
+          </div>
+          <div class="nav-hint-mobile">
+            <span>Swipe to browse</span>
+          </div>
+        </div>
+      </div>
       <div class="page page-right cover-right">
         <div class="cover-content">
           <h1>Le Palais<br>de Poche</h1>
@@ -314,6 +336,10 @@ function loadSpread(index) {
 }
 
 function goTo(index) {
+  if (current === 0 && index !== 0) {
+    const hint = document.getElementById("nav-hint");
+    if (hint) hint.classList.add("nav-hint--gone");
+  }
   spreads[current].classList.remove("active");
   current = index;
   spreads[current].classList.add("active");
@@ -321,6 +347,14 @@ function goTo(index) {
   loadSpread(current + 1);
   prevBtn.disabled = current === 0;
   nextBtn.disabled = current === total - 1;
+  // Sync spread-level nav buttons
+  document.querySelectorAll(".spread-prev").forEach(btn => { btn.disabled = current === 0; });
+  document.querySelectorAll(".spread-next").forEach(btn => { btn.disabled = current === total - 1; });
+  // Hide global nav when the active spread has its own
+  const hasSpreadNav = spreads[current].querySelector(".spread-nav") !== null;
+  document.body.classList.toggle("has-spread-nav", hasSpreadNav);
+  // Cover styling for global nav
+  document.body.classList.toggle("on-cover", current === 0);
 }
 
 prevBtn.addEventListener("click", () => {
@@ -328,6 +362,11 @@ prevBtn.addEventListener("click", () => {
 });
 nextBtn.addEventListener("click", () => {
   if (current < total - 1) goTo(current + 1);
+});
+
+book.addEventListener("click", (e) => {
+  if (e.target.closest(".spread-prev") && current > 0) goTo(current - 1);
+  if (e.target.closest(".spread-next") && current < total - 1) goTo(current + 1);
 });
 
 document.addEventListener("keydown", (e) => {

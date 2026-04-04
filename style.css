@@ -56,6 +56,10 @@ body {
   justify-content: center;
 }
 
+p {
+  text-wrap: pretty;
+}
+
 /* ─── Book container ─────────────────────────────────── */
 .book {
   position: relative;
@@ -155,6 +159,7 @@ body {
 h2 {
   font-size: clamp(var(--text-xl), 3vw, var(--text-2xl));
   font-weight: 800;
+  text-wrap: balance;
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--t-text);
@@ -165,7 +170,17 @@ h2 {
   font-weight: 400;
   line-height: 1.65;
   color: var(--t-caption);
-  max-width: 30ch;
+}
+
+.caption a {
+  color: inherit;
+  opacity: 0.55;
+  text-decoration: none;
+}
+
+.caption a:hover {
+  opacity: 1;
+  text-decoration: underline;
 }
 
 /* ─── Image ───────────────────────────────────────────── */
@@ -173,6 +188,7 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
@@ -271,6 +287,7 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
@@ -307,7 +324,7 @@ h2 {
   z-index: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   height: 100%;
   padding: 10% 10% 10%;
   gap: var(--sp-3);
@@ -328,7 +345,6 @@ h2 {
   font-size: var(--text-sm);
   line-height: 1.6;
   color: var(--t-caption);
-  max-width: 28ch;
 }
 
 /* ── Duo & Trio ────────────────────────────────────────
@@ -364,14 +380,15 @@ h2 {
   bottom: 8%;
   width: 46%;
   box-shadow: 0 6px 28px rgba(28, 28, 26, 0.28);
-  overflow: hidden;
-  outline: 8px solid var(--white);
+  padding: 8px;
+  background: var(--white);
 }
 
 .multi-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
@@ -428,7 +445,7 @@ h2 {
   display: grid;
   grid-template-columns: 4rem 1fr 1fr;
   grid-template-rows: auto auto;
-  align-items: end;
+  align-items: center;
   column-gap: var(--sp-3);
   padding: var(--sp-2) var(--sp-8) var(--sp-3) var(--sp-4);
   /*border-top: 1px solid rgba(28, 28, 26, 0.12);*/
@@ -456,9 +473,8 @@ h2 {
   align-self: center;
   font-size: var(--text-xs);
   line-height: 1.6;
-  max-width: none;
-  text-align: right;
-  padding-right: var(--sp-4);
+  max-width: 100%;
+  padding-right: var(--sp-8);
   color: var(--t-caption);
 }
 
@@ -486,14 +502,15 @@ h2 {
   bottom: 8%;
   width: 46%;
   box-shadow: 0 6px 28px rgba(28, 28, 26, 0.28);
-  overflow: hidden;
-  outline: 8px solid var(--white);
+  padding: 8px;
+  background: var(--white);
 }
 
 .layout-duo-side .duo-side-photos .multi-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
@@ -546,6 +563,7 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
@@ -564,15 +582,16 @@ h2 {
   position: absolute;
   width: 68%;
   aspect-ratio: 3 / 4;
-  overflow: hidden;
   box-shadow: 0 8px 32px rgba(28, 28, 26, 0.22);
-  outline: 10px solid var(--white);
+  padding: 10px;
+  background: var(--white);
 }
 
 .collage-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
@@ -584,6 +603,60 @@ h2 {
 .collage-photo--front {
   transform: rotate(3deg) translate(10%, -6%);
   z-index: 2;
+}
+
+/* ══════════════════════════════════════════════════════
+   NAV HINT (cover page — white side)
+   ══════════════════════════════════════════════════════ */
+.nav-hint {
+  position: absolute;
+  bottom: 10%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
+.nav-hint--gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nav-hint-desktop {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nav-hint-desktop span {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--black) 35%, transparent);
+  margin-left: 0.2rem;
+}
+
+.nav-hint-key {
+  width: 2rem;
+  height: 2rem;
+  opacity: 0.3;
+}
+
+.nav-hint-mobile {
+  display: none;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--black) 35%, transparent);
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .nav-hint-desktop { display: none; }
+  .nav-hint-mobile { display: block; }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -652,16 +725,15 @@ h2 {
 #prev,
 #next {
   position: fixed;
-  bottom: 1.5rem;
-  top: auto;
-  transform: none;
+  top: 50%;
+  transform: translateY(-50%);
   background: var(--red);
   border: none;
   color: var(--white);
-  font-size: 1.2rem;
+  font-size: 0.8rem;
   cursor: pointer;
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
@@ -669,14 +741,16 @@ h2 {
   justify-content: center;
   transition: opacity 0.2s;
   line-height: 1;
-  z-index: 10;
+  z-index: 1000;
 }
 
 #prev {
-  left: calc(50% - 3.2rem);
+  left: 0.5rem;
 }
+
 #next {
-  left: calc(50% + 0.4rem);
+  right: 0.5rem;
+  left: auto;
 }
 
 #prev:hover,
@@ -684,8 +758,73 @@ h2 {
   opacity: 0.7;
 }
 
+body.on-cover #prev,
+body.on-cover #next {
+  background: var(--white);
+  color: var(--red);
+  border-color: rgba(255, 61, 33, 0.2);
+}
+
 #prev:disabled,
 #next:disabled {
-  opacity: 0.2;
+  opacity: 0;
+  pointer-events: none;
   cursor: default;
+}
+
+/* ─── Spread-level nav (on image column for split layouts) ── */
+.spread-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  left: 0.75rem;
+  right: 0.75rem;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.spread:hover .spread-nav,
+.spread-nav:focus-within {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.spread-prev,
+.spread-next {
+  background: var(--red);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--white);
+  font-size: 0.8rem;
+  cursor: pointer;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+  line-height: 1;
+}
+
+.spread-prev:hover,
+.spread-next:hover {
+  opacity: 0.7;
+}
+
+.spread-prev:disabled,
+.spread-next:disabled {
+  opacity: 0;
+  pointer-events: none;
+  cursor: default;
+}
+
+/* Hide global nav when the active spread has its own nav */
+body.has-spread-nav #prev,
+body.has-spread-nav #next {
+  display: none;
 }
