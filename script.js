@@ -222,7 +222,7 @@ function buildSpread(page, i, prevLayout) {
         <div class="page page-left display-page">
           <div class="display-body">
             <p class="display-numeral">${num}</p>
-            <h2 class="display-title">${page.title}</h2>
+            <h2>${page.title}</h2>
             <p class="caption display-caption">${page.caption}</p>
           </div>
         </div>
