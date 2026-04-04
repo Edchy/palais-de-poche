@@ -279,16 +279,19 @@ const pages = [
   {
     img: "img/IMG_4338.webp",
     title: "Loft Life",
-    caption: "A snapshot of me and the kids settled into their cozy new hideaway—the "kids loft." It’s a tight squeeze, but perfectly sized for reading, playing, and making the most of the upper levels.",
+    caption:
+      "A snapshot of me and the kids settled into their cozy new hideaway—the 'kids loft'. It’s a tight squeeze, but perfectly sized for reading, playing, and making the most of the upper levels.",
   }, // 2021-11-15
   {
     imgs: ["img/IMG_6156.webp", "img/IMG_6158.webp"],
     title: "The Front",
-    caption: "These shots capture the front of the structure from two different angles. The iron vitriol treatment is settling in, giving the facade its distinct character as the house takes its place on the land.",
+    caption:
+      "These shots capture the front of the structure from two different angles. The iron vitriol treatment is settling in, giving the facade its distinct character as the house takes its place on the land.",
   }, // 2026-03-29
   {
     imgs: ["img/IMG_6159.webp", "img/IMG_6161.webp"],
     title: "The Back",
-    caption: "These shots show the house from the back, offering a different perspective on the scale and the iron vitriol finish. The reverse side highlights the continuous lines of the structure as it sits against the natural backdrop.",
+    caption:
+      "These shots show the house from the back, offering a different perspective on the scale and the iron vitriol finish. The reverse side highlights the continuous lines of the structure as it sits against the natural backdrop.",
   }, // 2026-03-29
 ];

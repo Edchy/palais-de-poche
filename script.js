@@ -185,10 +185,6 @@ function buildSpread(page, i, prevLayout) {
       <div class="spread layout-reversed" id="spread-${i + 1}" ${t}>
         <div class="page page-left reversed-img">
           <img data-src="${imgs[0]}" alt="${page.title}"${imgClass}>
-          <div class="spread-nav spread-nav">
-            <button class="spread-prev" aria-label="Previous page">&#8592;</button>
-            <button class="spread-next" aria-label="Next page">&#8594;</button>
-          </div>
         </div>
         <div class="page page-right reversed-text">
           <div class="page-content">
@@ -196,6 +192,10 @@ function buildSpread(page, i, prevLayout) {
             <h2>${page.title}</h2>
             <p class="caption">${page.caption}</p>
           </div>
+        </div>
+        <div class="spread-nav spread-nav">
+          <button class="spread-prev" aria-label="Previous page">&#8592;</button>
+          <button class="spread-next" aria-label="Next page">&#8594;</button>
         </div>
       </div>`;
   }
@@ -280,16 +280,6 @@ function buildBook() {
   book.innerHTML += `
     <div class="spread active" id="spread-0">
       <div class="page page-left cover-left">
-        <div class="nav-hint" id="nav-hint">
-          <div class="nav-hint-desktop">
-            <img src="icon/noun-left-key-6141674.svg" class="nav-hint-key" alt="Left arrow key">
-            <img src="icon/noun-right-key-6141675.svg" class="nav-hint-key" alt="Right arrow key">
-            <span>to browse</span>
-          </div>
-          <div class="nav-hint-mobile">
-            <span>Swipe to browse</span>
-          </div>
-        </div>
       </div>
       <div class="page page-right cover-right">
         <div class="cover-content">
