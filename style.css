@@ -863,7 +863,6 @@ body.has-spread-nav #next {
    Swipe handles all navigation — buttons are hidden.
    ══════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
-
   /* ── Global base ───────────────────────────────────── */
   .spread {
     flex-direction: column;
@@ -1173,5 +1172,4 @@ body.has-spread-nav #next {
     font-size: 0.875rem;
     max-width: 100%;
   }
-
 }
