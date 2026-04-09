@@ -172,6 +172,14 @@ h2 {
   color: var(--t-caption);
 }
 
+.caption-stack {
+  display: contents;
+}
+
+.read-more-toggle {
+  display: none;
+}
+
 .caption a {
   color: inherit;
   opacity: 0.55;
@@ -866,23 +874,26 @@ body.has-spread-nav #next {
   /* ── Global base ───────────────────────────────────── */
   .spread {
     flex-direction: column;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
   }
 
   .page,
   .page-left {
     flex: none;
     width: 100%;
+    min-height: 0;
     border-right: none;
   }
 
-  /* Text panels: fixed height with internal scroll */
+  /* Text panels size to content; images keep priority */
   .wide-text,
   .reversed-text,
   .display-page,
   .duo-side-text,
   .page-left {
-    overflow: hidden;
-    height: 42vh;
+    overflow: visible;
+    height: auto;
     flex-shrink: 0;
   }
 
@@ -893,10 +904,11 @@ body.has-spread-nav #next {
   .page-content,
   .layout-reversed .reversed-text .page-content,
   .layout-full-bleed .page-content {
-    padding: var(--sp-6) var(--sp-4) var(--sp-8);
+    padding: var(--sp-4) var(--sp-4) var(--sp-6);
     justify-content: flex-start;
-    overflow-y: auto;
-    height: 100%;
+    gap: var(--sp-1);
+    overflow: visible;
+    height: auto;
   }
 
   h2,
@@ -908,9 +920,67 @@ body.has-spread-nav #next {
     text-wrap: pretty;
   }
 
+  h2 {
+    font-size: clamp(1.4rem, 6.4vw, 1.95rem);
+    line-height: 1.05;
+  }
+
+  .label {
+    font-size: 0.65rem;
+  }
+
   .caption {
-    font-size: 0.875rem;
-    line-height: 1.7;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    max-width: 42ch;
+  }
+
+  .caption-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.625rem;
+    width: 100%;
+  }
+
+  .caption-stack.is-collapsible:not(.is-expanded) .caption {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+  }
+
+  .caption-stack.is-expanded .caption {
+    display: block;
+    overflow: visible;
+  }
+
+  .caption-stack.is-collapsible .read-more-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--t-text);
+    font: inherit;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+
+  .wide-img,
+  .layout-reversed .reversed-img,
+  .layout-red .page-right,
+  .layout-display .page-right,
+  .layout-collage .collage-stage,
+  .layout-duo-side .duo-side-photos,
+  .layout-duo .multi-photos,
+  .layout-trio .multi-photos {
+    flex: 1 1 auto;
+    min-height: clamp(17rem, 48dvh, 26rem);
   }
 
   /* ── Navigation: hidden on mobile (swipe works) ────── */
@@ -1002,7 +1072,6 @@ body.has-spread-nav #next {
 
   .layout-wide .wide-img {
     order: 1;
-    height: 58vh;
   }
 
   /* ── Reversed layout ───────────────────────────────── */
@@ -1011,7 +1080,6 @@ body.has-spread-nav #next {
   }
 
   .layout-reversed .reversed-img {
-    height: 58vh;
     border-right: none;
   }
 
@@ -1030,7 +1098,6 @@ body.has-spread-nav #next {
 
   .layout-red .page-right {
     order: 1;
-    height: 58vh;
   }
 
   /* ── Display layout ────────────────────────────────── */
@@ -1043,11 +1110,11 @@ body.has-spread-nav #next {
   }
 
   .layout-display .display-body {
-    height: 100%;
-    padding: var(--sp-6) var(--sp-4) var(--sp-8);
-    gap: var(--sp-2);
+    height: auto;
+    padding: var(--sp-4) var(--sp-4) var(--sp-6);
+    gap: var(--sp-1);
     justify-content: flex-start;
-    overflow-y: auto;
+    overflow: visible;
   }
 
   .layout-display .display-title {
@@ -1057,7 +1124,6 @@ body.has-spread-nav #next {
 
   .layout-display .page-right {
     order: 1;
-    height: 56vh;
   }
 
   /* ── Collage layout ────────────────────────────────── */
@@ -1076,11 +1142,11 @@ body.has-spread-nav #next {
 
   .layout-collage .collage-stage {
     order: 1;
-    height: 60vh;
+    padding: var(--sp-4);
   }
 
   .layout-collage .collage-photo {
-    width: 52%;
+    width: min(52%, 15rem);
   }
 
   /* ── Duo-side layout ───────────────────────────────── */
@@ -1095,7 +1161,6 @@ body.has-spread-nav #next {
 
   .layout-duo-side .duo-side-photos {
     order: 1;
-    height: 60vh;
   }
 
   .layout-duo-side .duo-side-photos .multi-photo {
@@ -1108,6 +1173,13 @@ body.has-spread-nav #next {
     display: flex;
     flex-direction: row;
     gap: 2px;
+  }
+
+  .layout-duo .multi-stage,
+  .layout-trio .multi-stage {
+    position: static;
+    inset: auto;
+    min-height: 100%;
   }
 
   /* Reset ALL absolute positioning from desktop rules */
@@ -1149,9 +1221,9 @@ body.has-spread-nav #next {
     grid-template-columns: unset;
     grid-template-rows: unset;
     gap: var(--sp-1);
-    padding: var(--sp-6) var(--sp-4) var(--sp-8);
-    height: 42vh;
-    overflow-y: auto;
+    padding: var(--sp-4) var(--sp-4) var(--sp-6);
+    height: auto;
+    overflow: visible;
     flex-shrink: 0;
   }
 
@@ -1165,11 +1237,11 @@ body.has-spread-nav #next {
   }
 
   .multi-bar h2 {
-    font-size: clamp(var(--text-xl), 6vw, var(--text-2xl));
+    font-size: clamp(1.35rem, 6vw, 1.8rem);
   }
 
   .multi-bar .caption {
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     max-width: 100%;
   }
 }

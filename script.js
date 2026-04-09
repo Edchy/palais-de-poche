@@ -111,12 +111,37 @@ function getImgs(page) {
   return page.imgs || [page.img];
 }
 
+const MOBILE_COLLAPSIBLE_CAPTION_LENGTH = 190;
+
+function isCaptionCollapsible(page) {
+  const plainCaption = page.caption
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return plainCaption.length > MOBILE_COLLAPSIBLE_CAPTION_LENGTH;
+}
+
+function buildCaptionMarkup(page, captionClass = "caption") {
+  const collapsible = isCaptionCollapsible(page);
+  const wrapperClass = `caption-stack${collapsible ? " is-collapsible" : ""}`;
+  const button = collapsible
+    ? `<button class="read-more-toggle" type="button" aria-expanded="false">Read more</button>`
+    : "";
+
+  return `
+      <div class="${wrapperClass}">
+        <p class="${captionClass}">${page.caption}</p>
+        ${button}
+      </div>`;
+}
+
 function buildTextBlock(page, num, extra = "") {
   return `
     <div class="page-content${extra ? " " + extra : ""}">
       <p class="label">${num}</p>
       <h2>${page.title}</h2>
-      <p class="caption">${page.caption}</p>
+      ${buildCaptionMarkup(page)}
     </div>`;
 }
 
@@ -156,7 +181,7 @@ function buildSpread(page, i, prevLayout) {
           <div class="multi-bar">
             <p class="label">${num}</p>
             <h2>${page.title}</h2>
-            <p class="caption">${page.caption}</p>
+            ${buildCaptionMarkup(page)}
           </div>
         </div>
       </div>`;
@@ -174,7 +199,7 @@ function buildSpread(page, i, prevLayout) {
           <div class="multi-bar">
             <p class="label">${num}</p>
             <h2>${page.title}</h2>
-            <p class="caption">${page.caption}</p>
+            ${buildCaptionMarkup(page)}
           </div>
         </div>
       </div>`;
@@ -190,7 +215,7 @@ function buildSpread(page, i, prevLayout) {
           <div class="page-content">
             <p class="label">${num}</p>
             <h2>${page.title}</h2>
-            <p class="caption">${page.caption}</p>
+            ${buildCaptionMarkup(page)}
           </div>
         </div>
         <div class="spread-nav spread-nav">
@@ -223,7 +248,7 @@ function buildSpread(page, i, prevLayout) {
           <div class="display-body">
             <p class="display-numeral">${num}</p>
             <h2>${page.title}</h2>
-            <p class="caption display-caption">${page.caption}</p>
+            ${buildCaptionMarkup(page, "caption display-caption")}
           </div>
         </div>
         <div class="page page-right">
@@ -333,6 +358,7 @@ function goTo(index) {
   spreads[current].classList.remove("active");
   current = index;
   spreads[current].classList.add("active");
+  spreads[current].scrollTop = 0;
   loadSpread(current);
   loadSpread(current + 1);
   prevBtn.disabled = current === 0;
@@ -355,6 +381,16 @@ nextBtn.addEventListener("click", () => {
 });
 
 book.addEventListener("click", (e) => {
+  const readMoreToggle = e.target.closest(".read-more-toggle");
+  if (readMoreToggle) {
+    const captionStack = readMoreToggle.closest(".caption-stack");
+    const isExpanded = captionStack.classList.toggle("is-expanded");
+
+    readMoreToggle.setAttribute("aria-expanded", String(isExpanded));
+    readMoreToggle.textContent = isExpanded ? "Show less" : "Read more";
+    return;
+  }
+
   if (e.target.closest(".spread-prev") && current > 0) goTo(current - 1);
   if (e.target.closest(".spread-next") && current < total - 1) goTo(current + 1);
 });
