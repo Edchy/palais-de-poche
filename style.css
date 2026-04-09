@@ -172,14 +172,6 @@ h2 {
   color: var(--t-caption);
 }
 
-.caption-stack {
-  display: contents;
-}
-
-.read-more-toggle {
-  display: none;
-}
-
 .caption a {
   color: inherit;
   opacity: 0.55;
@@ -935,42 +927,6 @@ body.has-spread-nav #next {
     max-width: 42ch;
   }
 
-  .caption-stack {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.625rem;
-    width: 100%;
-  }
-
-  .caption-stack.is-collapsible:not(.is-expanded) .caption {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
-    overflow: hidden;
-  }
-
-  .caption-stack.is-expanded .caption {
-    display: block;
-    overflow: visible;
-  }
-
-  .caption-stack.is-collapsible .read-more-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0;
-    border: none;
-    background: transparent;
-    color: var(--t-text);
-    font: inherit;
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    opacity: 0.72;
-  }
-
   .wide-img,
   .layout-reversed .reversed-img,
   .layout-red .page-right,
@@ -979,8 +935,9 @@ body.has-spread-nav #next {
   .layout-duo-side .duo-side-photos,
   .layout-duo .multi-photos,
   .layout-trio .multi-photos {
-    flex: 1 1 auto;
-    min-height: clamp(17rem, 48dvh, 26rem);
+    flex: none;
+    height: 66.666dvh;
+    min-height: 66.666dvh;
   }
 
   /* ── Navigation: hidden on mobile (swipe works) ────── */
