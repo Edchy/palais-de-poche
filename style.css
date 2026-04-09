@@ -74,6 +74,7 @@ p {
   position: absolute;
   inset: 0;
   display: flex;
+  background: var(--t-bg);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s ease;
@@ -868,6 +869,7 @@ body.has-spread-nav #next {
     flex-direction: column;
     overflow-y: auto;
     overscroll-behavior-y: contain;
+    padding-bottom: env(safe-area-inset-bottom, 0);
   }
 
   .page,
@@ -896,7 +898,8 @@ body.has-spread-nav #next {
   .page-content,
   .layout-reversed .reversed-text .page-content,
   .layout-full-bleed .page-content {
-    padding: var(--sp-4) var(--sp-4) var(--sp-6);
+    padding: var(--sp-4) var(--sp-4)
+      calc(var(--sp-6) + env(safe-area-inset-bottom, 0));
     justify-content: flex-start;
     gap: var(--sp-1);
     overflow: visible;
@@ -1068,7 +1071,8 @@ body.has-spread-nav #next {
 
   .layout-display .display-body {
     height: auto;
-    padding: var(--sp-4) var(--sp-4) var(--sp-6);
+    padding: var(--sp-4) var(--sp-4)
+      calc(var(--sp-6) + env(safe-area-inset-bottom, 0));
     gap: var(--sp-1);
     justify-content: flex-start;
     overflow: visible;
@@ -1178,7 +1182,8 @@ body.has-spread-nav #next {
     grid-template-columns: unset;
     grid-template-rows: unset;
     gap: var(--sp-1);
-    padding: var(--sp-4) var(--sp-4) var(--sp-6);
+    padding: var(--sp-4) var(--sp-4)
+      calc(var(--sp-6) + env(safe-area-inset-bottom, 0));
     height: auto;
     overflow: visible;
     flex-shrink: 0;
