@@ -184,6 +184,38 @@ h2 {
   text-decoration: underline;
 }
 
+/* ─── Info slides ────────────────────────────────────── */
+.layout-info {
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-8);
+}
+
+.info-panel {
+  width: min(100%, 56rem);
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: var(--sp-6);
+  row-gap: var(--sp-3);
+}
+
+.info-panel .label {
+  grid-row: 1 / 3;
+  padding-top: 0.5em;
+}
+
+.info-panel h2 {
+  font-size: clamp(var(--text-2xl), 6vw, var(--text-hero));
+  line-height: 0.92;
+  max-width: 10ch;
+}
+
+.info-panel .caption {
+  max-width: 52ch;
+  font-size: clamp(var(--text-sm), 1.25vw, var(--text-base));
+}
+
 /* ─── Image ───────────────────────────────────────────── */
 .page-right img {
   width: 100%;
@@ -928,6 +960,29 @@ body.has-spread-nav #next {
     font-size: 0.8125rem;
     line-height: 1.55;
     max-width: 42ch;
+  }
+
+  .layout-info {
+    min-height: 100dvh;
+    padding: var(--sp-4);
+    justify-content: flex-start;
+  }
+
+  .info-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100dvh - var(--sp-8));
+    gap: var(--sp-2);
+  }
+
+  .info-panel h2 {
+    font-size: clamp(2.5rem, 15vw, 4.8rem);
+    max-width: 9ch;
+  }
+
+  .info-panel .caption {
+    max-width: 34ch;
   }
 
   .wide-img,

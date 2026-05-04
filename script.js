@@ -128,6 +128,17 @@ function buildSpread(page, i, prevLayout) {
   const imgClass = page.contain ? ' class="contain"' : "";
   const t = `data-theme="${theme}"`;
 
+  if (layout === "info") {
+    return `
+      <div class="spread layout-info" id="spread-${i + 1}" ${t}>
+        <div class="info-panel">
+          <p class="label">${num}</p>
+          <h2>${page.title}</h2>
+          <p class="caption">${page.caption}</p>
+        </div>
+      </div>`;
+  }
+
   if (layout === "duo-side") {
     return `
       <div class="spread layout-duo-side" id="spread-${i + 1}" ${t}>

@@ -2,10 +2,30 @@
 // Each entry: { img, title, caption, contain?, layout? }
 //          or { imgs: ["a.webp","b.webp"], title, caption }       - duo (2 stacked)
 //          or { imgs: ["a.webp","b.webp","c.webp"], title, caption } - trio (3 stacked)
-// layout options (single-image only): 'wide' | 'reversed' | 'red' | 'display' | 'collage'
+// layout options: 'info' for text-only slides; single-image options: 'wide' | 'reversed' | 'red' | 'display' | 'collage'
 // Multi-image entries auto-select duo/trio - do not set layout on those.
 // To reorder: move lines up/down.
 const pages = [
+  {
+    title: "The Shape of It",
+    caption:
+      "The house measures 3 x 9 metres on the outside, with a total height of 4.3 metres including the wheels. Small enough to stay mobile, tall enough to give the interior real volume, lofts, and proper breathing room.",
+    layout: "info",
+    theme: "rouge",
+  },
+  {
+    title: "Built for Winter",
+    caption:
+      "The walls and roof are packed with 140 mm of insulation, using a mix of glass wool and cellulose. Underfoot, the floor has 95 mm of insulation plus 40 mm of Frigolit panels beneath it. Heat comes from an air-to-air heat pump, underfloor heating in the bathroom, and electric radiators when cold winters ask for backup.",
+    layout: "info",
+  },
+  {
+    title: "What Fits Inside",
+    caption:
+      "Downstairs holds the main living space, kitchen, and bathroom. Above the bathroom is a smaller sleeping loft; above the kitchen is the larger one. The bathroom has a shower, sink, water heater, electrical cabinet, and underfloor heating. There is no toilet installed, but there is room for one.",
+    layout: "info",
+    theme: "rouge",
+  },
   {
     img: "img/IMG_2462.webp",
     title: "We Built This City",
