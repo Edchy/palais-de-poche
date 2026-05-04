@@ -34,11 +34,10 @@ const pages = [
   }, // 2021-07-13–14
 
   {
-    imgs: ["img/tb.JPG", "img/ea.jpg"],
     title: "Freedom! 90",
     caption:
       "It started with a simple math problem: rent money out, forever. Our solution: stop. We did not want a bigger house, we wanted a freer life. So we built our own, smaller, on purpose. Less floor plan, less stuff, less Sunday spent cleaning things we do not care about. Turns out, ditching the square footage gave us more of everything else. Money, weekends, breathing room. Funny how that works.",
-    layout: "duo-side",
+    layout: "info",
   },
 
   {
@@ -89,15 +88,6 @@ const pages = [
     title: "Steady as She Goes",
     caption:
       "Behind every great build is someone who actually knows what they're doing. Our carpenter didn't follow the plan, he understood it. His precision and feel for the wood is what gave this place its integrity. We helped where we could. He's the reason it stands the way it does. (You can probably tell which one of us is the carpenter.)",
-  }, // 2021-04-23
-  {
-    img: "img/IMG_1149.webp",
-    title: "Cover me in Sunshine",
-    caption: `Shower me with good times.
-    Tell me that the world's been spinning since the beginning.
-    And everything will be alright.
-    Cover me in sunshine`,
-    contain: true,
   }, // 2021-04-23
   {
     imgs: ["img/IMG_1155.webp", "img/IMG_1159.webp"],
